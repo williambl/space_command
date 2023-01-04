@@ -1,45 +1,66 @@
+#![feature(fn_traits)]
+extern crate core;
+
+#[macro_use] extern crate strum_macros;
+
+use std::any::Any;
+use std::borrow::BorrowMut;
 use std::collections::HashMap;
-use std::iter::Map;
-use splines::{Interpolation, Key, Spline};
+use std::fmt::Debug;
+use std::mem;
+use serde::{Serialize, Deserialize};
+use strum_macros::{EnumDiscriminants, EnumString};
 
-pub trait Keyframeable<T> {
-    fn keyframe(&self, time: i32) -> Option<&Key<f64, T>>;
-    fn set_keyframe(&mut self, time: i32, value: T, interpolation: Interpolation<f64, T>) -> ();
-    fn remove_keyframe(&mut self, time: i32) -> bool;
+#[derive(Serialize, Deserialize, Debug)]
+pub enum Easing {
+   Linear
 }
 
-#[derive(Debug)]
-pub struct Track<T> {
+#[derive(Serialize, Deserialize, Debug, EnumDiscriminants)]
+#[strum_discriminants(derive(EnumString, Serialize, Deserialize))]
+pub enum TrackData {
+    F32(f32),
+    F64(f64),
+    F64x2([f64;2]),
+    F64x3([f64;3])
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Keyframe {
+    row: i32,
+    value: TrackData,
+    easing: Easing
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct Track {
     name: String,
-    keyframes: Spline<f64, T>
+    data_type: TrackDataDiscriminants,
+    keyframes: Vec<Keyframe>
 }
 
-impl<T> Keyframeable<T> for Track<T> {
-    fn keyframe(&self, time: i32) -> Option<&Key<f64, T>> {
-        self.keyframes.keys().iter().find(|key| key.t == f64::from(time))
-    }
-
-    fn set_keyframe(&mut self, time: i32, value: T, interpolation: Interpolation<f64, T>) -> () {
-        self.keyframes.add(Key::new(f64::from(time), value, interpolation));
-    }
-
-    fn remove_keyframe(&mut self, time: i32) -> bool {
-        match self.keyframes.keys().iter().position(|key| key.t == f64::from(time)) {
-            Some(x) => self.keyframes.remove(x).is_some(),
-            None => false
-        }
-    }
+#[derive(Serialize, Deserialize, Debug)]
+struct Project {
+    name: String,
+    tracks: Vec<Track>
 }
 
 fn main() {
-    let mut track: Track<f64> = Track {
+    let mut track: Track = Track {
         name: String::from("hi"),
-        keyframes: Spline::from_vec(vec![])
+        data_type: TrackDataDiscriminants::F64,
+        keyframes: vec![Keyframe { row: 1, value: TrackData::F64(0.3), easing: Easing::Linear }]
     };
 
-    track.set_keyframe(0, 0.3, Interpolation::Linear);
-    track.set_keyframe(2, 0.6, Interpolation::Linear);
+    let project = Project {
+        name: String::from("Project 1"),
+        tracks: vec![track]
+    };
 
-    println!("{:#?}", track.keyframe(0).expect("Should work"));
-    println!("{:#?}", track.keyframes.sample(1.0).expect("Should work"))
+    let serialized = save_project(&project);
+    println!("serialized = {}", serialized);
+}
+
+fn save_project(project: &Project) -> String {
+    serde_json::to_string(project).expect("Saving should work")
 }
