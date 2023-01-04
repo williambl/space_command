@@ -15,8 +15,8 @@ use serde::{Serialize, Deserialize};
 use strum_macros::{EnumDiscriminants, EnumString};
 use crate::track::{Easing, Keyframe, Track, TrackData, TrackDataDiscriminants};
 
-#[derive(Serialize, Deserialize, Debug)]
-struct Project {
+#[derive(Serialize, Deserialize, Debug, Clone)]
+pub struct Project {
     name: String,
     tracks: Vec<Track>
 }
