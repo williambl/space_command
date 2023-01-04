@@ -14,9 +14,9 @@ pub enum Easing {
     Linear(Box<[f64]>),
     CubicBezier{
         x1: f64,
+        y1: f64,
         x2: f64,
-        x3: f64,
-        x4: f64
+        y2: f64
     },
     Steps {
         num_steps: usize,
