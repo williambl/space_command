@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package space_command.net;
+
+import "track_data_types.proto";
+import "easings.proto";
+
+message SetTracksS2C {
+  message Track {
+    int32 id = 1;
+    string name = 2;
+    int32 data_type = 3;
+  }
+
+  repeated Track tracks = 1;
+}
+
+message SetKeyframesS2C {
+  int32 track_id = 1;
+
+  message Keyframe {
+    int32 row = 1;
+    TrackData value = 2;
+    Easing easing = 3;
+  }
+
+  repeated Keyframe keyframes = 2;
+}
+
+message DeleteKeyframesS2C {
+  int32 track_id = 1;
+  repeated int32 rows = 2;
+}
+
+message SetPlayStateS2C {
+  bool is_playing = 1;
+}
+
+message SetCurrentRowS2C {
+  int32 row = 1;
+}

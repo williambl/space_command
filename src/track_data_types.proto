@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package space_command.net;
+
+message F32 {
+  float value = 1;
+}
+
+message F64 {
+  double value = 1;
+}
+
+message Vec2 {
+  repeated double value = 1;
+}
+
+message Vec3 {
+  repeated double value = 1;
+}
+
+message TrackData {
+  oneof data {
+    F32 f32 = 1;
+    F64 f64 = 2;
+    Vec2 vec2 = 3;
+    Vec3 vec3 = 4;
+  }
+}

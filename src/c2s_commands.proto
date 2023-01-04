@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package space_command.net;
+
+message SetTracksC2S {
+  message Track {
+    string name = 2;
+    int32 data_type = 3;
+  }
+
+  repeated Track tracks = 1;
+}
+
+message SetPlayStateC2S {
+  bool is_playing = 1;
+}
+
+message SetCurrentRowC2S {
+  int32 row = 1;
+}

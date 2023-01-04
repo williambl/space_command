@@ -1,6 +1,7 @@
 #![feature(fn_traits)]
 
 mod track;
+mod server;
 
 extern crate core;
 
@@ -8,10 +9,12 @@ use std::arch::x86_64::_mm_stream_ps;
 use std::fmt::Debug;
 use std::io::{Read, Write};
 use std::net::{TcpListener, TcpStream};
+use prost::Message;
 
 use serde::{Serialize, Deserialize};
 use strum_macros::{EnumDiscriminants, EnumString};
-use crate::track::{Easing, Keyframe, Track, TrackData};
+use crate::server::create_set_play_state_s2c;
+use crate::track::{Easing, Keyframe, Track, TrackData, TrackDataDiscriminants};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Project {

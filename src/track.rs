@@ -1,3 +1,6 @@
+use serde::{Serialize, Deserialize};
+use strum_macros::{EnumDiscriminants, EnumString};
+
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Easing {
     Linear
