@@ -1,13 +1,8 @@
 #![feature(fn_traits)]
 extern crate core;
 
-#[macro_use] extern crate strum_macros;
-
-use std::any::Any;
-use std::borrow::BorrowMut;
-use std::collections::HashMap;
 use std::fmt::Debug;
-use std::mem;
+
 use serde::{Serialize, Deserialize};
 use strum_macros::{EnumDiscriminants, EnumString};
 
@@ -46,7 +41,7 @@ struct Project {
 }
 
 fn main() {
-    let mut track: Track = Track {
+    let track: Track = Track {
         name: String::from("hi"),
         data_type: TrackDataDiscriminants::F64,
         keyframes: vec![Keyframe { row: 1, value: TrackData::F64(0.3), easing: Easing::Linear }]
@@ -58,7 +53,7 @@ fn main() {
     };
 
     let serialized = save_project(&project);
-    println!("serialized = {}", serialized);
+    println!("serialized = {serialized}");
 }
 
 fn save_project(project: &Project) -> String {
