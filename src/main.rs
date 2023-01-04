@@ -25,7 +25,7 @@ fn main() -> Result<(), std::io::Error> {
     let track: Track = Track {
         name: String::from("hi"),
         data_type: TrackDataDiscriminants::F64,
-        keyframes: vec![Keyframe { row: 1, value: TrackData::F64(0.3), easing: Easing::Linear }]
+        keyframes: vec![Keyframe { row: 1, value: TrackData::F64(0.3), easing: Easing::Linear(Box::new([0.0, 0.5, 0.6, 1.0])) }]
     };
 
     let project = Project {
