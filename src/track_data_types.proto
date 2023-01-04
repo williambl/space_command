@@ -2,23 +2,23 @@ syntax = "proto3";
 
 package space_command.net;
 
-message F32 {
-  float value = 1;
-}
-
-message F64 {
-  double value = 1;
-}
-
-message F64x2 {
-  repeated double value = 1;
-}
-
-message F64x3 {
-  repeated double value = 1;
-}
-
 message TrackData {
+  message F32 {
+    float value = 1;
+  }
+
+  message F64 {
+    double value = 1;
+  }
+
+  message F64x2 {
+    repeated double value = 1;
+  }
+
+  message F64x3 {
+    repeated double value = 1;
+  }
+
   oneof data {
     F32 f32 = 1;
     F64 f64 = 2;
