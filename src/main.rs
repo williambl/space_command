@@ -1,38 +1,17 @@
 #![feature(fn_traits)]
+
+mod track;
+
 extern crate core;
 
+use std::arch::x86_64::_mm_stream_ps;
 use std::fmt::Debug;
+use std::io::{Read, Write};
+use std::net::{TcpListener, TcpStream};
 
 use serde::{Serialize, Deserialize};
 use strum_macros::{EnumDiscriminants, EnumString};
-
-#[derive(Serialize, Deserialize, Debug)]
-pub enum Easing {
-   Linear
-}
-
-#[derive(Serialize, Deserialize, Debug, EnumDiscriminants)]
-#[strum_discriminants(derive(EnumString, Serialize, Deserialize))]
-pub enum TrackData {
-    F32(f32),
-    F64(f64),
-    F64x2([f64;2]),
-    F64x3([f64;3])
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Keyframe {
-    row: i32,
-    value: TrackData,
-    easing: Easing
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Track {
-    name: String,
-    data_type: TrackDataDiscriminants,
-    keyframes: Vec<Keyframe>
-}
+use crate::track::{Easing, Keyframe, Track, TrackData};
 
 #[derive(Serialize, Deserialize, Debug)]
 struct Project {
@@ -40,7 +19,7 @@ struct Project {
     tracks: Vec<Track>
 }
 
-fn main() {
+fn main() -> Result<(), std::io::Error> {
     let track: Track = Track {
         name: String::from("hi"),
         data_type: TrackDataDiscriminants::F64,
@@ -54,6 +33,8 @@ fn main() {
 
     let serialized = save_project(&project);
     println!("serialized = {serialized}");
+
+    Ok(())
 }
 
 fn save_project(project: &Project) -> String {
