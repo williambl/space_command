@@ -3,5 +3,33 @@ syntax = "proto3";
 package space_command.net;
 
 message Easing {
+  message Linear {
+    repeated double values = 1;
+  }
 
+  message CubicBezier {
+    double x1 = 1;
+    double y1 = 2;
+    double x2 = 3;
+    double y2 = 4;
+  }
+
+  message Steps {
+    int32 num_steps = 1;
+
+    enum Direction {
+      START = 0;
+      END = 1;
+      BOTH = 2;
+      NONE = 3;
+    }
+
+    Direction direction = 2;
+  }
+
+  oneof easing {
+    Linear linear = 1;
+    CubicBezier cubic_bezier = 2;
+    Steps steps = 3;
+  }
 }
