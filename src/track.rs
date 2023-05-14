@@ -10,7 +10,7 @@ pub enum StepsDir {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, EnumDiscriminants)]
-#[strum_discriminants(derive(EnumString, Serialize, Deserialize))]
+#[strum_discriminants(derive(EnumString, Serialize, Deserialize, Display))]
 pub enum Easing {
     Linear(Box<[f64]>),
     CubicBezier{
@@ -26,7 +26,7 @@ pub enum Easing {
 }
 
 #[derive(Serialize, Deserialize, Debug, Copy, Clone, EnumDiscriminants)]
-#[strum_discriminants(derive(EnumString, Serialize, Deserialize))]
+#[strum_discriminants(derive(EnumString, Serialize, Deserialize, Display))]
 pub enum TrackData {
     F32(f32),
     F64(f64),

@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package space_command.net;
+
+message Handshake {
+  string hello = 1;
+  repeated string data_types = 2;
+  repeated string easing_types = 3;
+  repeated string s2c_commands = 4;
+  repeated string c2s_commands = 5;
+  repeated string extra_features = 6;
+}
