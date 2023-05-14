@@ -2,6 +2,8 @@
 
 mod track;
 mod server;
+mod animator;
+mod project;
 
 extern crate core;
 
@@ -13,13 +15,8 @@ use prost::Message;
 
 use serde::{Serialize, Deserialize};
 use strum_macros::{EnumDiscriminants, EnumString};
+use crate::project::Project;
 use crate::track::{Easing, Keyframe, Track, TrackData, TrackDataDiscriminants};
-
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct Project {
-    name: String,
-    tracks: Vec<Track>
-}
 
 fn main() -> Result<(), std::io::Error> {
     let track: Track = Track {
